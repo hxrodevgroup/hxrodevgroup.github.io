@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" />
+  <title>Homepage | amtvamyt</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Google Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0078d7;
+      color: #000;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+      box-sizing: border-box;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="8" fill="white" stroke="black" stroke-width="2"/></svg>') 16 16, auto;
+    }
+
+    .app {
+      width: min(1100px, 100%);
+      margin: auto;
+      background: #f0f0f0;
+      border: 2px solid #2c2c2c;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,.35);
+      padding: 1.2rem;
+    }
+
+    h1 { margin-top: 0; }
+
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); }
+
+    .project-card {
+      background: #fff;
+      border: 1px solid #999;
+      border-radius: 6px;
+      padding: 1rem;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.05);
+    }
+    .project-card button {
+      margin-top: .6rem;
+      background: #0078d7;
+      color: #fff;
+      border: 1px solid #005a9e;
+      border-radius: 4px;
+      padding: .45rem .8rem;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="8" fill="white" stroke="black" stroke-width="2"/></svg>') 16 16, auto;
+      font-weight: bold;
+    }
+    .project-card button:hover { opacity: .9; }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 1rem;
+    }
+
+    .xp-window {
+      width: 1080px;
+      height: 1920px;
+      max-width: min(100vw, 1080px);
+      max-height: min(100vh, 1920px);
+      background: #000;
+      border-radius: 40px;
+      border: 1px solid rgba(255,255,255,.3);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 20px 45px rgba(0,0,0,.75);
+      font-family: 'Tahoma','Arial',sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .xp-titlebar {
+      background: linear-gradient(to right, #000080, #0000a0 50%, #000080);
+      color: #fff;
+      padding: .2rem .5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #fff;
+    }
+    .xp-titlebar .caption {
+      font-size: .95rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 0 rgba(0,0,0,.5);
+    }
+    .xp-buttons {
+      display: flex;
+      gap: .3rem;
+    }
+    .xp-buttons button {
+      width: 20px;
+      height: 18px;
+      font-size: .75rem;
+      border: 1px solid #000;
+      background: #c0c0c0;
+      color: #000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .xp-content {
+      position: relative;
+      flex: 1;
+      background: #fff;
+      border-top: 2px solid #777;
+    }
+
+    .xp-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    .xp-footer {
+      background: #c0c0c0;
+      border-top: 2px solid #fff;
+      padding: .4rem .6rem;
+      font-size: .83rem;
+      color: #000;
+    }
+
+    .overlay.active { display: flex; }
+
+    footer {
+      background: #e6e6e6;
+      border-top: 2px solid #999;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: .9rem;
+      color: #333;
+      margin-top: 2rem;
+    }
+
+    footer a {
+      color: #0078d7;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 .5rem;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    footer p {
+      margin: .5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgm" autoplay loop>
+    <source src="https://archive.org/download/hyper-potions-checkpoint/%5BElectro%5D%20-%20Nitro%20Fun%20%20Hyper%20Potions%20-%20Checkpoint%20%5BMonstercat%20Release%5D.mp3" type="audio/mpeg" />
+  </audio>
+
+  <div class="app">
+    <h1>My Projects</h1>
+    <p>The Best site ever made.</p>
+
+    <div class="grid" id="projectGrid"></div>
+  </div>
+
+  <div class="overlay" id="popupOverlay" aria-hidden="true">
+    <div class="xp-window" role="dialog" aria-modal="true" aria-label="Project Preview Window">
+      <div class="xp-titlebar">
+        <span class="caption" id="xpCaption">Project Preview</span>
+        <div class="xp-buttons">
+          <button aria-label="Minimize" id="btnMin">_</button>
+          <button aria-label="Close" id="btnClose">×</button>
+        </div>
+      </div>
+      <div class="xp-content" id="xpContent">
+        <iframe id="projectFrame" src="about:blank" title="Project preview iframe"></iframe>
+      </div>
+      <div class="xp-footer" id="xpFooter">Double-click title bar to drag (demo only)</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      <a href="readme.md">📖 README</a>
+      <a href="song-license.md">🎵 Song License</a>
+    </p>
+    <p>&copy; 2026 amtvamyt. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const projects = [
+      { name: 'Flappy Bird Remake', url: 'https://incredible-mermaid-4fd395.netlify.app/' }
+    ];
+
+    const grid = document.getElementById('projectGrid');
+    const overlay = document.getElementById('popupOverlay');
+    const frame = document.getElementById('projectFrame');
+    const caption = document.getElementById('xpCaption');
+    const footer = document.getElementById('xpFooter');
+    const btnClose = document.getElementById('btnClose');
+    const btnMin = document.getElementById('btnMin');
+    const bgm = document.getElementById('bgm');
+
+    function openProject(project) {
+      caption.textContent = project.name;
+      footer.textContent = project.url;
+      frame.src = project.url;
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+      bgm.pause();
+    }
+
+    function closePopup() {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+      frame.src = 'about:blank';
+    }
+
+    function minimizePopup() {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    btnClose.addEventListener('click', closePopup);
+    btnMin.addEventListener('click', minimizePopup);
+
+    overlay.addEventListener('click', event => {
+      if (event.target === overlay) closePopup();
+    });
+
+    for (const project of projects) {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+      card.innerHTML = `
+        <h3>${project.name}</h3>
+
+        <button type="button">Open</button>
+      `;
+
+      card.querySelector('button').addEventListener('click', () => openProject(project));
+      grid.appendChild(card);
+    }
+
+    // Optional: allow Esc to close
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) closePopup();
+    });
+  </script>
+</body>
+</html>
