@@ -139,18 +139,18 @@
     footer {
       background: #e6e6e6;
       border-top: 2px solid #999;
-      padding: 1.5rem;
+      padding: 0.6rem 0.8rem;
       text-align: center;
-      font-size: .9rem;
+      font-size: 0.75rem;
       color: #333;
-      margin-top: 2rem;
+      margin-top: auto;
     }
 
     footer a {
       color: #0078d7;
       text-decoration: none;
       font-weight: bold;
-      margin: 0 .5rem;
+      margin: 0 0.3rem;
     }
 
     footer a:hover {
@@ -158,12 +158,12 @@
     }
 
     footer p {
-      margin: .5rem 0;
+      margin: 0.2rem 0;
     }
   </style>
 </head>
 <body>
-  <audio id="bgm" autoplay loop>
+  <audio id="bgm" autoplay loop muted>
     <source src="bgm.mp3" type="audio/mpeg" />
   </audio>
 
@@ -225,11 +225,13 @@
       overlay.classList.remove('active');
       overlay.setAttribute('aria-hidden', 'true');
       frame.src = 'about:blank';
+      bgm.play();
     }
 
     function minimizePopup() {
       overlay.classList.remove('active');
       overlay.setAttribute('aria-hidden', 'true');
+      bgm.play();
     }
 
     btnClose.addEventListener('click', closePopup);
